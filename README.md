@@ -2,6 +2,9 @@
 
 - Create Vite
 - Configured Tailwind CSS into our app
+- Header
+- Login Form
+- Sign Up Form
 
 # Features
 - Login/Sign Up
