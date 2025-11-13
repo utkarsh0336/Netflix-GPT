@@ -7,7 +7,7 @@ export const API_OPTIONS = {
   headers: {
     accept: "application/json",
     Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4ODk1ZGEyNzFiNWQwYmIyODM4MTg3N2Q4YzFkM2Y0YSIsIm5iZiI6MTc2Mjg3MDcwOS41ODksInN1YiI6IjY5MTM0NWI1MjkzY2Y1Y2JmMDNhMzdiOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.zBbhLASMkzrU0_pKSrh9VFoGF7TA3HtMNtOW7-JzGBI",
+      "Bearer " + import.meta.env.VITE_TMDB_KEY,
   },
 };
 export const IMG_CDN_URL = "https://image.tmdb.org/t/p/w780";
@@ -27,3 +27,4 @@ export const SUPPORTED_LANGUAGES = [
     name: "Spanish",
   },
 ];
+export const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
