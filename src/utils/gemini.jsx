@@ -2,7 +2,7 @@ import  { GoogleGenAI }from "@google/genai";
 
 const genAI = new GoogleGenAI({
   apiKey: import.meta.env.VITE_GEMINI_API_KEY,
-  dangerouslyAllowBrowser: true, // required for frontend calls
+  dangerouslyAllowBrowser: true // required for frontend calls
 });
 
 export default genAI;

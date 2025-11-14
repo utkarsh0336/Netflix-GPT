@@ -33,10 +33,8 @@ const GptSearchBar = () => {
       ". Only Give me names of 5 movies, comma-seperated like the example result given ahead. Example Result : Sholay, Don, Gadar, Golmaal, Koi Mil Gaya";
     // console.log(import.meta.env.VITE_GEMINI_API_KEY);
     const geminiResult = await genAI.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: [
-        { type: "text", text: geminiQuery }, // ✅
-      ],
+      model: "gemini-pro",
+      contents: [{ role: "user", parts: [{ text: geminiQuery }] }]
     });
 
     // console.log(geminiResult.text);
