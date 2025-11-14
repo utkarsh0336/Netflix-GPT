@@ -47,6 +47,7 @@
 - Adding .env file
 - Adding .env file to gitignore
 - Made our site responsive
+- Deployment
 
 
 # Features
