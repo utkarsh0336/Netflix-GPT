@@ -25,16 +25,18 @@ const GptSearchBar = () => {
 
   const handleGptSearchClick = async () => {
     console.log(searchText.current.value);
-    // Make an API Call to Ollama and get Movie Results
+    // Make an API Call to Gemini and get Movie Results
 
     const geminiQuery =
       "Act as a Movie Recommendation system and suggest some movies for the query : " +
       searchText.current.value +
       ". Only Give me names of 5 movies, comma-seperated like the example result given ahead. Example Result : Sholay, Don, Gadar, Golmaal, Koi Mil Gaya";
-
+    // console.log(import.meta.env.VITE_GEMINI_API_KEY);
     const geminiResult = await genAI.models.generateContent({
       model: "gemini-2.5-flash",
-      contents: [{ role: "user", parts: [{ text: geminiQuery }] }],
+      contents: [
+        { type: "text", text: geminiQuery }, // ✅
+      ],
     });
 
     // console.log(geminiResult.text);
@@ -42,13 +44,15 @@ const GptSearchBar = () => {
     // console.log(gptMovies);
 
     // For each movie I will search in TMDB API
-    const promiseArray = gptMovies.map((movie) =>searchMovieTMDB(movie));
+    const promiseArray = gptMovies.map((movie) => searchMovieTMDB(movie));
     // [Promise1, Promise2, Promise3, Promise4, Promise5]
 
     const tmdbResults = await Promise.all(promiseArray);
     console.log(tmdbResults);
 
-    dispatch(addGptMovieResult({movieNames: gptMovies, movieResults: tmdbResults}));
+    dispatch(
+      addGptMovieResult({ movieNames: gptMovies, movieResults: tmdbResults })
+    );
 
     // const gptQuery =
     //   "Act as a Movie Recommendation system and suggest some movies for the query : " +
@@ -61,9 +65,9 @@ const GptSearchBar = () => {
     // console.log(gptResults.choices[0].message.content);
   };
   return (
-    <div className="pt-[10%] flex justify-center">
+    <div className="pt-[35%] md:pt-[10%] flex justify-center">
       <form
-        className="w-1/2 bg-black grid grid-cols-12"
+        className="w-full md:w-1/2 bg-black grid grid-cols-12"
         onSubmit={(e) => e.preventDefault()}
       >
         <input

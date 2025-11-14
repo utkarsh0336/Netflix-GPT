@@ -1,10 +1,8 @@
-// gemini.js
-import { GoogleGenAI } from "@google/genai";
-import { GEMINI_API_KEY } from "./constants";
+import  { GoogleGenAI }from "@google/genai";
 
 const genAI = new GoogleGenAI({
-  apiKey: GEMINI_API_KEY,
-  dangerouslyAllowBrowser: true,
+  apiKey: import.meta.env.VITE_GEMINI_API_KEY,
+  dangerouslyAllowBrowser: true, // required for frontend calls
 });
 
 export default genAI;
