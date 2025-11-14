@@ -12,6 +12,9 @@
   "dependencies": {
     "@google/genai": "^1.29.1",
     "@tailwindcss/vite": "^4.1.17",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
     "firebase": "^12.5.0",
     "ollama": "^0.6.2",
     "openai": "^6.8.1",

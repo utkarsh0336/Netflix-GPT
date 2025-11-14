@@ -32,6 +32,7 @@ const GptSearchBar = () => {
       "Act as a Movie Recommendation system and suggest some movies for the query : " +
       searchText.current.value +
       ". Only Give me names of 5 movies, comma-seperated like the example result given ahead. Example Result : Sholay, Don, Gadar, Golmaal, Koi Mil Gaya";
+<<<<<<< HEAD
     try {
       const geminiResult = await genAI.models.generateContent({
         model: "gemini-2.5-flash",
@@ -39,11 +40,19 @@ const GptSearchBar = () => {
       });
 
       const gptMovies = geminiResult.text.split(",");
+=======
+    // console.log(import.meta.env.VITE_GEMINI_API_KEY);
+    const geminiResult = await genAI.models.generateContent({
+      model: "gemini-pro",
+      contents: [{ role: "user", parts: [{ text: geminiQuery }] }]
+    });
+>>>>>>> 83543596143df207eeff7fdb822103508398ff29
 
       // For each movie I will search in TMDB API
       const promiseArray = gptMovies.map((movie) => searchMovieTMDB(movie));
       // [Promise1, Promise2, Promise3, Promise4, Promise5]
 
+<<<<<<< HEAD
       const tmdbResults = await Promise.all(promiseArray);
       console.log(tmdbResults);
 
@@ -56,6 +65,28 @@ const GptSearchBar = () => {
         setErrorMessage("");
       }, 3000);
     }
+=======
+    // For each movie I will search in TMDB API
+    const promiseArray = gptMovies.map((movie) => searchMovieTMDB(movie));
+    // [Promise1, Promise2, Promise3, Promise4, Promise5]
+
+    const tmdbResults = await Promise.all(promiseArray);
+    console.log(tmdbResults);
+
+    dispatch(
+      addGptMovieResult({ movieNames: gptMovies, movieResults: tmdbResults })
+    );
+
+    // const gptQuery =
+    //   "Act as a Movie Recommendation system and suggest some movies for the query : " +
+    //   searchText.current.value +
+    //   ". Only Give me names of 5 movies, comma-seperated like the example result given ahead. Example Result : Sholay, Don, Gadar, Golmaal, Koi Mil Gaya";
+    // const gptResults = await openai.chat.completions.create({
+    //   model: "gpt-4o",
+    //   messages: [{ role: "user", content: gptQuery }],
+    // });
+    // console.log(gptResults.choices[0].message.content);
+>>>>>>> 83543596143df207eeff7fdb822103508398ff29
   };
   return (
     <div className="pt-[35%] md:pt-[10%] flex justify-center">
