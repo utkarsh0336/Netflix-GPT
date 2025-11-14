@@ -38,6 +38,15 @@
 - GPT Search Feature
 - GPT Search Bar 
 - (BONUS) Multilingual Feature in our app
+- Get GPT Search Gemini API Key
+- Gemini Search API Call
+- Fetch Gemini Movie Suggestions from TMDB
+- Created gptSlice and added data 
+- Reused Movie List component to make movie suggestion container
+- Memoisation
+- Adding .env file
+- Adding .env file to gitignore
+- Made our site responsive
 
 
 # Features

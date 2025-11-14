@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import lang from "../utils/languageConstants";
 import { useDispatch, useSelector } from "react-redux";
 import genAI from "../utils/gemini";
@@ -9,6 +9,7 @@ const GptSearchBar = () => {
   const langKey = useSelector((store) => store.config.lang);
   const searchText = useRef(null);
   const dispatch = useDispatch();
+  const [errorMessage, setErrorMessage] = useState("");
 
   // This will search movie in TMDB API
   const searchMovieTMDB = async (movie) => {
@@ -25,47 +26,49 @@ const GptSearchBar = () => {
 
   const handleGptSearchClick = async () => {
     console.log(searchText.current.value);
-    // Make an API Call to Ollama and get Movie Results
+    // Make an API Call to Gemini and get Movie Results
 
     const geminiQuery =
       "Act as a Movie Recommendation system and suggest some movies for the query : " +
       searchText.current.value +
       ". Only Give me names of 5 movies, comma-seperated like the example result given ahead. Example Result : Sholay, Don, Gadar, Golmaal, Koi Mil Gaya";
+    try {
+      const geminiResult = await genAI.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: [{ role: "user", parts: [{ text: geminiQuery }] }],
+      });
 
-    const geminiResult = await genAI.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: [{ role: "user", parts: [{ text: geminiQuery }] }],
-    });
+      const gptMovies = geminiResult.text.split(",");
 
-    // console.log(geminiResult.text);
-    const gptMovies = geminiResult.text.split(",");
-    // console.log(gptMovies);
+      // For each movie I will search in TMDB API
+      const promiseArray = gptMovies.map((movie) => searchMovieTMDB(movie));
+      // [Promise1, Promise2, Promise3, Promise4, Promise5]
 
-    // For each movie I will search in TMDB API
-    const promiseArray = gptMovies.map((movie) =>searchMovieTMDB(movie));
-    // [Promise1, Promise2, Promise3, Promise4, Promise5]
+      const tmdbResults = await Promise.all(promiseArray);
+      console.log(tmdbResults);
 
-    const tmdbResults = await Promise.all(promiseArray);
-    console.log(tmdbResults);
-
-    dispatch(addGptMovieResult({movieNames: gptMovies, movieResults: tmdbResults}));
-
-    // const gptQuery =
-    //   "Act as a Movie Recommendation system and suggest some movies for the query : " +
-    //   searchText.current.value +
-    //   ". Only Give me names of 5 movies, comma-seperated like the example result given ahead. Example Result : Sholay, Don, Gadar, Golmaal, Koi Mil Gaya";
-    // const gptResults = await openai.chat.completions.create({
-    //   model: "gpt-4o",
-    //   messages: [{ role: "user", content: gptQuery }],
-    // });
-    // console.log(gptResults.choices[0].message.content);
+      dispatch(
+        addGptMovieResult({ movieNames: gptMovies, movieResults: tmdbResults })
+      );
+    } catch (error) {
+      setErrorMessage("Server is busy. Please Try Again after 1 minute");
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 3000);
+    }
   };
   return (
-    <div className="pt-[10%] flex justify-center">
+    <div className="pt-[35%] md:pt-[10%] flex justify-center">
       <form
-        className="w-1/2 bg-black grid grid-cols-12"
+        className="w-full md:w-1/2 bg-black grid grid-cols-12"
         onSubmit={(e) => e.preventDefault()}
       >
+        {errorMessage && (
+          <div className="col-span-12 text-red-500 text-center mb-2">
+            {errorMessage}
+          </div>
+        )}
+
         <input
           ref={searchText}
           type="text"
@@ -73,7 +76,7 @@ const GptSearchBar = () => {
           placeholder={lang[langKey].gptSearchPlaceHolder}
         />
         <button
-          className="py-2 px-4 col-span-3 m-4 bg-red-600 text-white rounded-lg cursor-pointer"
+          className="py-2 px-4 col-span-3 m-4 bg-red-600 text-white rounded-lg cursor-pointer hover:bg-white/40"
           onClick={handleGptSearchClick}
         >
           {lang[langKey].search}
