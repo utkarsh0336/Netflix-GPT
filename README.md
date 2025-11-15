@@ -49,6 +49,10 @@
 - Made our site responsive
 - Deployment
 
+# Features for future
+- Should make a proper backend for it making api calls more secure.
+- Till now it mostly focuses on UI portions like React and Tailwind CSS
+
 
 # Features
 - Login/Sign Up

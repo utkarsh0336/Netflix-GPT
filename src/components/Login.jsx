@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import Header from "./Header";
 import { useState } from "react";
 import { checkValidateData } from "../utils/validate";
@@ -11,6 +11,7 @@ import { auth } from "../utils/firebase";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { USER_AVATAR , BG_URL } from "../utils/constants";
+
 
 
 const Login = () => {
